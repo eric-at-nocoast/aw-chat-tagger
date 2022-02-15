@@ -15,21 +15,15 @@
       // https://developer.zendesk.com/apps/docs/developer-guide/getting_started
       var client = ZAFClient.init();
       client.invoke('resize', { width: '100%', height: '200px' });
-      client.get(['ticket.id', 'ticket.via.channel']).then(function (data) {
+      client.get('ticket').then(function (data) {
         if (data['ticket.via.channel'] === 'chat') {
-          var addTags = JSON.stringify({
-            "ticket": {
-              //If you don't want to overwrite the original tags on the chat you'll want to call the update_many endpoint as done on line 31. If you don't mind overwriting, replace with the commented out url.
-              "additional_tags": [
-                "tag1",
-                "tag2"
-              ]
-            }
+          var ticketInfo = JSON.stringify({
+            data
           });
           client.request({
             //url: `/api/v2/tickets/${data['ticket.id']}
-          url: `/api/v2/tickets/update_many.json?ids=${data['ticket.id']}`,
-          type: "PUT",
+          url: `exampleapp.domain.com/api/endpoint`,
+          type: "POST",
           data: `${addTags}`,
           contentType: "application/json"
         })
